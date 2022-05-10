@@ -21,8 +21,15 @@ void setup() {
 void loop() {
     int availableData = DynamicHID().available();
     if (availableData > 0) {
-        for (int i = 0; i < availableData; i++) {
-            Serial.println(DynamicHID().read());
+        uint8_t firstByte = DynamicHID().read();
+        for (int i = 0; i < availableData - 1; i++) {
+            DynamicHID().read();
+        }
+
+        if (bitRead(firstByte, 0)) {
+            digitalWrite(LED_BUILTIN, 1);
+        } else {
+            digitalWrite(LED_BUILTIN, 0);
         }
     }
 
